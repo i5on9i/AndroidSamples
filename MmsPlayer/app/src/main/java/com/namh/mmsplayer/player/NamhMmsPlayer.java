@@ -2,6 +2,7 @@ package com.namh.mmsplayer.player;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -10,10 +11,14 @@ import java.io.IOException;
  */
 public class NamhMmsPlayer {
 
+    private static final String TAG = "NamhMmsPlayer";
     private MediaPlayer mediaPlayer = null;
+    private final String EBS_RTSP_URL = "rtsp://ebsonairandaod.ebs.co.kr/fmradiobandiaod/bandiappaac";
+
+
 
     public NamhMmsPlayer() throws IOException {
-        String url = "rtsp://ebslive.ebs.co.kr/ebswmalive";
+
         mediaPlayer = new MediaPlayer();
         // Set type to streaming
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -23,6 +28,12 @@ public class NamhMmsPlayer {
             public boolean onError(MediaPlayer mp, int what, int extra) {
                 // ... react appropriately ...
                 // The MediaPlayer has moved to the Error state, must be reset!
+
+                // @see http://developer.android.com/reference/android/media/MediaPlayer.OnErrorListener.html
+                Log.e(TAG, "media player error");
+                if (mediaPlayer != null)
+                    mediaPlayer.reset();
+                Log.e(TAG, "what:" + what + "; extra:" + extra);
                 return false;
             }
         });
@@ -31,10 +42,11 @@ public class NamhMmsPlayer {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 mediaPlayer.start();
+
             }
         });
         // Set the data source to the remote URL
-        mediaPlayer.setDataSource(url);
+        mediaPlayer.setDataSource(EBS_RTSP_URL);
         // Trigger an async preparation which will file listener when completed
         mediaPlayer.prepareAsync();
 
