@@ -25,7 +25,7 @@ public class MmsPlayerService extends Service {
      * IPC.
      */
     public class LocalBinder extends Binder {
-        MmsPlayerService getService() {
+        public MmsPlayerService getService() {
             return MmsPlayerService.this;
         }
     }

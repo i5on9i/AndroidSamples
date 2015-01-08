@@ -1,7 +1,12 @@
 package com.namh.mmsplayer;
 
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.media.MediaPlayer;
+import android.os.IBinder;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -12,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.namh.mmsplayer.player.MmsPlayerService;
 import com.namh.mmsplayer.player.NamhMmsPlayer;
 
 import java.io.IOException;
@@ -20,6 +26,9 @@ import java.io.IOException;
 public class MainActivity extends ActionBarActivity {
 
     private MediaPlayer mMediaPlayer;
+
+    private MmsPlayerService mMmsPlayerService;
+    boolean mBound = false;
 
 
     @Override
@@ -50,6 +59,11 @@ public class MainActivity extends ActionBarActivity {
             e.printStackTrace();
         }
 
+
+        // Bind to LocalService
+        Intent intent = new Intent(this, MmsPlayerService.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
     }
 
 
@@ -58,6 +72,16 @@ public class MainActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Unbind from the service
+        if (mBound) {
+            unbindService(mConnection);
+            mBound = false;
+        }
     }
 
     @Override
@@ -90,4 +114,23 @@ public class MainActivity extends ActionBarActivity {
             return rootView;
         }
     }
+
+
+    /** Defines callbacks for service binding, passed to bindService() */
+    private ServiceConnection mConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            MmsPlayerService.LocalBinder binder = (MmsPlayerService.LocalBinder) service;
+            mMmsPlayerService = binder.getService();
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
 }
