@@ -29,4 +29,8 @@ public class MmsPlayerService extends Service {
             return MmsPlayerService.this;
         }
     }
+
+    public String start(){
+        return "Test";
+    }
 }

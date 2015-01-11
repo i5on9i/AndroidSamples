@@ -9,5 +9,11 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     tools:context=".MainActivity$PlaceholderFragment">
+    
+    <Button
+        android:id="@+id/btn_test"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/test_button_height"
+        android:text="Hello" />
 
 </RelativeLayout>

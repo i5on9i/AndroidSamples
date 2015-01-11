@@ -11,11 +11,13 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.namh.mmsplayer.player.MmsPlayerService;
 import com.namh.mmsplayer.player.NamhMmsPlayer;
@@ -25,19 +27,26 @@ import java.io.IOException;
 
 public class MainActivity extends ActionBarActivity {
 
+    private static final String TAG = "MainActivity";
+
     private MediaPlayer mMediaPlayer;
 
     private MmsPlayerService mMmsPlayerService;
-    boolean mBound = false;
+    boolean mIsBound = false;
+    private PlaceholderFragment fragment = null;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
         if (savedInstanceState == null) {
+            fragment = new PlaceholderFragment();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.rl_container_main, new PlaceholderFragment())
+                    .add(R.id.rl_container_main, fragment)
                     .commit();
         }
 
@@ -60,12 +69,31 @@ public class MainActivity extends ActionBarActivity {
         }
 
 
-        // Bind to LocalService
-        Intent intent = new Intent(this, MmsPlayerService.class);
-        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+        doBindService();
+
+
+
+
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(fragment != null){
+            Button testButton = fragment.getButton();
+            testButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Bind to LocalService
+                    Log.d(TAG, mMmsPlayerService.start());
+                }
+            });
+
+        }
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -78,10 +106,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onStop() {
         super.onStop();
         // Unbind from the service
-        if (mBound) {
-            unbindService(mConnection);
-            mBound = false;
-        }
+        doUnbindService();
     }
 
     @Override
@@ -104,6 +129,7 @@ public class MainActivity extends ActionBarActivity {
      */
     public static class PlaceholderFragment extends Fragment {
 
+
         public PlaceholderFragment() {
         }
 
@@ -112,6 +138,10 @@ public class MainActivity extends ActionBarActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             return rootView;
+        }
+
+        public Button getButton(){
+            return (Button)getView().findViewById(R.id.btn_test);
         }
     }
 
@@ -125,12 +155,33 @@ public class MainActivity extends ActionBarActivity {
             // We've bound to LocalService, cast the IBinder and get LocalService instance
             MmsPlayerService.LocalBinder binder = (MmsPlayerService.LocalBinder) service;
             mMmsPlayerService = binder.getService();
-            mBound = true;
+            mIsBound = true;
         }
 
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
-            mBound = false;
+            mIsBound = false;
         }
     };
+
+
+    private void doBindService() {
+        // Establish a connection with the service.  We use an explicit
+        // class name because we want a specific service implementation that
+        // we know will be running in our own process (and thus won't be
+        // supporting component replacement by other applications).
+        Intent intent = new Intent(this, MmsPlayerService.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
+        mIsBound = true;
+    }
+
+    private void doUnbindService() {
+        if (mIsBound) {
+            // Detach our existing connection.
+            unbindService(mConnection);
+            mIsBound = false;
+        }
+    }
+
 }
