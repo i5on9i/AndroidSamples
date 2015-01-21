@@ -1,6 +1,76 @@
+
 <resources>
+
+
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="test_button_height">16dp</dimen>
+
+
+    <dimen name="font_size_input_send_button">12dp</dimen>
+    <dimen name="font_size_input_send_size">10dp</dimen>
+
+    <dimen name="pulltorefresh_list_item_padding">5dp</dimen>
+
+    <dimen name="item_info_time_text_size">10sp</dimen>
+    <dimen name="item_info_time_left_padding">5dp</dimen>
+
+    <dimen name="item_info_name_text_size">9sp</dimen>
+    <dimen name="mmini_note_text_size">14sp</dimen>
+
+    <dimen name="mmini_note_min_height">50dp</dimen>
+
+    <dimen name="max_width_of_left_info">30dp</dimen>
+    <dimen name="mmini_note_icon_size">18dp</dimen>
+    <dimen name="mmini_note_left_padding">8dp</dimen>
+    <dimen name="mmini_note_icon_margin">8dp</dimen>
+
+
+
+
+    <!-- min_height includes the top padding size, so if the top padding is increased,
+        min_height should also be increased. -->
+    <dimen name="podlist_min_height">120dp</dimen> <!-- @dimen/calendar_height -->
+    <dimen name="podlist_padding_top">10dp</dimen>
+    <dimen name="podlist_padding_left">10dp</dimen>
+
+    <dimen name="poditem_title_height">35dp</dimen>
+
+    <dimen name="dialog_text_size">20sp</dimen>
+
+    <dimen name="input_box_min_height">30dp</dimen>
+
+    <dimen name="player_min_height">30dp</dimen>
+
+    <dimen name="player_progress_height">4dp</dimen>
+
+    <!--
+        "slideview_top_height" value must be
+        same as the DEFAULT_PANEL_HEIGHT
+        in {@link: SlidingUpPanelLayout}
+    -->
+    <dimen name="slideview_top_height">64dp</dimen>
+    <dimen name="slideview_top_padding">2dp</dimen>
+
+    <dimen name="player_seekbar_progress_left_right_margin">-16dp</dimen>
+    <dimen name="player_seekbar_progress_right_margin">16dp</dimen>
+    <!--<dimen name="player_seekbar_progress_left_right_margin">-16dp</dimen>-->
+    <dimen name="player_seekbar_progress_bottom_margin">-18dp</dimen>
+
+    <dimen name="player_button_size">48dp</dimen>
+    <dimen name="bottom_player_button_margin">16dp</dimen>
+
+    <dimen name="default_padding">8dp</dimen>
+
+
+    <dimen name="play_controls_notification">48.0dip</dimen>
+    <dimen name="play_controls_notification_normal">54.0dip</dimen>
+
+    <dimen name="notification_large_icon_width">64.0dip</dimen>
+
+
+
+
+
 </resources>

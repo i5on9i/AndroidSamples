@@ -55,26 +55,7 @@ public class MainActivity extends ActionBarActivity {
         // toolbar.setTitle() requires API-21
 
 
-        NamhMmsPlayer mmsplayer = null;
-        try {
-            mmsplayer = new NamhMmsPlayer();
-        } catch (IOException e) {
-            // @see http://developer.android.com/guide/topics/media/mediaplayer.html#mediaplayer
-
-            e.printStackTrace();
-            if(mmsplayer != null)
-                mmsplayer.release();
-        } catch(IllegalArgumentException e){
-            e.printStackTrace();
-        }
-
-
         doBindService();
-
-
-
-
-
     }
 
     @Override
@@ -87,7 +68,12 @@ public class MainActivity extends ActionBarActivity {
                 @Override
                 public void onClick(View v) {
                     // Bind to LocalService
-                    Log.d(TAG, mMmsPlayerService.start());
+
+                    if(mMmsPlayerService != null){
+                        mMmsPlayerService.start();
+                        Log.d(TAG, mMmsPlayerService.testFunc());
+                    }
+
                 }
             });
 

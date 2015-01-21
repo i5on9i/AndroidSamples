@@ -5,4 +5,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <!-- mp3player -->
+    <string name="mp3player_service_stopped">"mp3 player Service is stopped"</string>
+    <string name="mp3player_service_started">"mp3 player Service is started"</string>
 </resources>

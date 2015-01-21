@@ -3,6 +3,7 @@ package com.namh.mmsplayer.player;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.util.Log;
+import android.widget.MediaController;
 
 import java.io.IOException;
 
@@ -17,48 +18,76 @@ public class NamhMmsPlayer {
 
 
 
-    public NamhMmsPlayer() throws IOException {
+
+
+
+    public NamhMmsPlayer(MediaPlayer.OnErrorListener errorListener,
+                         MediaPlayer.OnPreparedListener preparedListener,
+                         MediaPlayer.OnCompletionListener completionListener) throws IOException {
 
         mediaPlayer = new MediaPlayer();
         // Set type to streaming
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         // Listen for if the audio file can't be prepared
-        mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-            @Override
-            public boolean onError(MediaPlayer mp, int what, int extra) {
-                // ... react appropriately ...
-                // The MediaPlayer has moved to the Error state, must be reset!
-
-                // @see http://developer.android.com/reference/android/media/MediaPlayer.OnErrorListener.html
-                Log.e(TAG, "media player error");
-                if (mediaPlayer != null)
-                    mediaPlayer.reset();
-                Log.e(TAG, "what:" + what + "; extra:" + extra);
-                return false;
-            }
-        });
+        mediaPlayer.setOnErrorListener(errorListener);
         // Attach to when audio file is prepared for playing
-        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mediaPlayer.start();
-
-            }
-        });
+        mediaPlayer.setOnPreparedListener(preparedListener);
         // Set the data source to the remote URL
         mediaPlayer.setDataSource(EBS_RTSP_URL);
         // Trigger an async preparation which will file listener when completed
         mediaPlayer.prepareAsync();
 
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-
-            }
-        });
+        mediaPlayer.setOnCompletionListener(completionListener);
 
 
     }
+
+
+    public void start(){
+        if(mediaPlayer != null) {
+            mediaPlayer.start();
+        }
+    }
+
+    public boolean isPlaying(){
+        if(mediaPlayer != null) {
+            return mediaPlayer.isPlaying();
+        }
+        return false;
+    }
+
+    public void pause(){
+        if(mediaPlayer != null) {
+            mediaPlayer.pause();
+        }
+    }
+
+    public int getDuration(){
+        if(mediaPlayer != null) {
+            return mediaPlayer.getDuration();
+        }
+        return 0;
+    }
+
+    public int getCurrentPosition(){
+        if(mediaPlayer != null) {
+            return mediaPlayer.getCurrentPosition();
+        }
+        return 0;
+    }
+
+    public void seekTo(int pos){
+        if(mediaPlayer != null) {
+            mediaPlayer.seekTo(pos);
+        }
+    }
+
+    public void reset(){
+        if(mediaPlayer != null) {
+            mediaPlayer.reset();
+        }
+    }
+
 
     public void release(){
         if(mediaPlayer != null){
@@ -68,4 +97,16 @@ public class NamhMmsPlayer {
 
     }
 
+
+
+    public static class State{
+        // all possible internal states
+        public static final int ERROR = -1;
+        public static final int IDLE = 0;
+        public static final int PREPARING = 1;
+        public static final int PREPARED = 2;
+        public static final int PLAYING = 3;
+        public static final int PAUSED = 4;
+        public static final int PLAYBACK_COMPLETED = 5;
+    }
 }
