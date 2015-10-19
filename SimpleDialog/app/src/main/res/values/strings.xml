@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">SimpleDialog</string>
+    <string name="ok">ok</string>
+    <string name="cancel">cancel</string>
+    <string name="dialog_select_box">Select box</string>
+    <string name="username">User</string>
+    <string name="password">Password</string>
+</resources>
