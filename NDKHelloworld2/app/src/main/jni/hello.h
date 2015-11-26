@@ -1,0 +1,8 @@
+//
+// Created by namh on 2015-11-26.
+//
+
+#ifndef NDKHELLOWORLD2_HELLO_H
+#define NDKHELLOWORLD2_HELLO_H
+
+#endif //NDKHELLOWORLD2_HELLO_H
